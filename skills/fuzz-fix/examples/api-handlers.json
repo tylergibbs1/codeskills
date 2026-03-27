@@ -1,0 +1,10 @@
+{
+  "tag": "harden-api",
+  "target_files": ["src/api/**/*.ts"],
+  "target_functions": ["parseRequest", "validatePayload", "formatResponse"],
+  "test_command": "npm test -- --watchAll=false",
+  "test_dir": "src/api/__tests__",
+  "timeout_seconds": 30,
+  "max_inputs_per_batch": 10,
+  "fix_style": "defensive"
+}

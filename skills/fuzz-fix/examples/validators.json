@@ -1,0 +1,10 @@
+{
+  "tag": "harden-validators",
+  "target_files": ["src/validators/**/*.ts", "src/schemas/**/*.ts"],
+  "test_command": "npm test -- --watchAll=false",
+  "test_dir": "src/validators/__tests__",
+  "timeout_seconds": 30,
+  "max_inputs_per_batch": 15,
+  "consecutive_clean_to_advance": 5,
+  "fix_style": "permissive"
+}

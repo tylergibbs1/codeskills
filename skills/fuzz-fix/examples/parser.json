@@ -1,0 +1,9 @@
+{
+  "tag": "harden-parser",
+  "target_files": ["src/parser.py"],
+  "test_command": "pytest -q",
+  "test_dir": "tests/",
+  "timeout_seconds": 15,
+  "max_inputs_per_batch": 15,
+  "fix_style": "defensive"
+}
