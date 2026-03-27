@@ -1,0 +1,13 @@
+{
+  "tag": "cover-app",
+  "target_files": ["src/**/*.py", "app/**/*.py"],
+  "exclude_files": ["**/test_*.py", "**/tests/**", "**/__pycache__/**", "**/migrations/**"],
+  "test_dir": "tests/",
+  "test_name_pattern": "test_*.py",
+  "test_command": "pytest -q",
+  "coverage_command": "pytest --cov=src --cov-report=json -q 2>/dev/null",
+  "coverage_metric": "jq '.totals.percent_covered' coverage.json",
+  "metric_name": "line_coverage_pct",
+  "coverage_type": "line",
+  "timeout_seconds": 600
+}

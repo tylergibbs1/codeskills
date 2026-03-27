@@ -1,0 +1,13 @@
+{
+  "tag": "cover-pkg",
+  "target_files": ["**/*.go"],
+  "exclude_files": ["**/*_test.go", "**/vendor/**"],
+  "test_dir": ".",
+  "test_name_pattern": "*_test.go",
+  "test_command": "go test ./...",
+  "coverage_command": "go test -coverprofile=cover.out ./... 2>/dev/null",
+  "coverage_metric": "go tool cover -func=cover.out | tail -1 | awk '{print $NF}' | tr -d '%'",
+  "metric_name": "line_coverage_pct",
+  "coverage_type": "line",
+  "timeout_seconds": 300
+}

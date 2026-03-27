@@ -10,38 +10,37 @@ Skills are markdown files that give AI agents specialized knowledge and workflow
 
 ## How Skills Work Together
 
-All three skills share a common pattern: autonomous loop with measurable outcomes.
+All four skills share a common pattern: autonomous loop with measurable outcomes.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Autonomous Loop Pattern                       │
-│                                                                 │
-│   Explore project → Configure → Loop forever:                   │
-│     hypothesize → change → test → measure → keep or revert     │
-│                                                                 │
-│   Output: git history + results.tsv + run.log                   │
-└────────────────────┬────────────────────┬───────────────────────┘
-                     │                    │
-    ┌────────────────┼────────────────────┼────────────────┐
-    │                │                    │                │
-    ▼                ▼                    ▼                │
-┌──────────┐  ┌────────────┐  ┌───────────────┐          │
-│  auto-   │  │   auto-    │  │   fuzz-fix    │          │
-│ research │  │  refactor  │  │               │          │
-├──────────┤  ├────────────┤  ├───────────────┤          │
-│ Optimize │  │ Improve    │  │ Harden code   │          │
-│ any      │  │ code       │  │ against edge  │          │
-│ metric   │  │ quality    │  │ cases         │          │
-│          │  │ metrics    │  │               │          │
-│ ML, perf,│  │ lint, cov, │  │ APIs, parsers,│          │
-│ codegen  │  │ types,     │  │ validators    │          │
-│          │  │ complexity │  │               │          │
-└──────────┘  └────────────┘  └───────────────┘          │
-    │                │                    │                │
-    └────────────────┴────────────────────┘                │
-         Skills share: git branching, results.tsv,         │
-         context window management, strategy rotation      │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       Autonomous Loop Pattern                           │
+│                                                                         │
+│   Explore project → Configure → Loop forever:                           │
+│     hypothesize → change → test → measure → keep or revert             │
+│                                                                         │
+│   Output: git history + results.tsv + run.log                           │
+└──────────┬──────────────┬──────────────┬──────────────┬─────────────────┘
+           │              │              │              │
+           ▼              ▼              ▼              ▼
+    ┌──────────┐  ┌────────────┐  ┌───────────┐  ┌──────────┐
+    │  auto-   │  │   auto-    │  │ fuzz-fix  │  │  auto-   │
+    │ research │  │  refactor  │  │           │  │  test    │
+    ├──────────┤  ├────────────┤  ├───────────┤  ├──────────┤
+    │ Optimize │  │ Improve    │  │ Harden    │  │ Generate │
+    │ any      │  │ code       │  │ code      │  │ tests to │
+    │ metric   │  │ quality    │  │ against   │  │ increase │
+    │          │  │ metrics    │  │ edge      │  │ coverage │
+    │ ML, perf,│  │ lint, cov, │  │ cases     │  │          │
+    │ codegen  │  │ types,     │  │           │  │ JS, TS,  │
+    │          │  │ complexity │  │ APIs,     │  │ Python,  │
+    │          │  │            │  │ parsers   │  │ Go       │
+    └──────────┘  └────────────┘  └───────────┘  └──────────┘
+         │              │              │              │
+         └──────────────┴──────┬───────┴──────────────┘
+          Skills share: git branching, results.tsv,
+          context window management, strategy rotation
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Available Skills
@@ -51,6 +50,7 @@ All three skills share a common pattern: autonomous loop with measurable outcome
 | [auto-research](skills/auto-research/) | Autonomous experiment loop — modify code, measure a target metric, keep improvements, discard failures. Works in any project with a measurable metric (ML training, performance benchmarks, compiler optimization). | `research.json` |
 | [auto-refactor](skills/auto-refactor/) | Autonomous refactoring loop — pick files, apply behavior-preserving changes, run tests, measure a quality metric (lint warnings, coverage, type errors, complexity), keep improvements or revert. | `refactor.json` |
 | [fuzz-fix](skills/fuzz-fix/) | Autonomous fuzz-and-fix loop — generate adversarial edge-case inputs, catch crashes, fix the code, add regression tests. Loops until no new failures are found. | `fuzz.json` |
+| [auto-test](skills/auto-test/) | Autonomous test generation loop — find uncovered code paths, write tests, run the suite, keep tests that pass and increase coverage. | `testgen.json` |
 
 ## Installation
 
@@ -96,6 +96,7 @@ Once installed, invoke skills directly:
 /auto-research    → optimize any measurable metric
 /auto-refactor    → improve code quality metrics
 /fuzz-fix         → harden code against edge cases
+/auto-test        → generate tests to increase coverage
 ```
 
 Or describe what you want:
@@ -109,6 +110,9 @@ Or describe what you want:
 
 "Harden my API handlers against bad input"
 → Uses fuzz-fix
+
+"Write tests for my uncovered code"
+→ Uses auto-test
 ```
 
 Each skill auto-discovers your project, asks what to optimize, writes a config, then runs autonomously. Leave it running and come back to results.
@@ -139,9 +143,17 @@ Adversarial input generation with automatic fixes and regression tests.
 - **Config**: `fuzz.json` — define target files/functions, test command, fix style
 - **Output**: Git history on `fuzzfix/<tag>`, regression tests, `results.tsv`, `run.log`
 
+### auto-test
+
+Autonomous test generation for uncovered code paths.
+
+- **Use for**: Increasing line/branch coverage, finding untested error paths, building regression suites
+- **Config**: `testgen.json` — define target files, test command, coverage command
+- **Output**: Git history on `autotest/<tag>`, new test files, `results.tsv`, `run.log`
+
 ## The Contract
 
-All three skills share the same guarantee:
+All four skills share the same guarantee:
 
 > Every change either improves the codebase or gets thrown away. Tests must pass. The metric must not regress. No exceptions.
 

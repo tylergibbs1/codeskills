@@ -1,0 +1,14 @@
+{
+  "tag": "cover-src",
+  "target_files": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude_files": ["**/*.test.*", "**/*.spec.*", "**/__tests__/**", "**/node_modules/**", "**/dist/**"],
+  "test_dir": "src/__tests__",
+  "test_name_pattern": "*.test.ts",
+  "test_command": "npm test -- --watchAll=false",
+  "coverage_command": "npx jest --coverage --coverageReporters=json-summary 2>/dev/null",
+  "coverage_metric": "jq '.total.lines.pct' coverage/coverage-summary.json",
+  "metric_name": "line_coverage_pct",
+  "coverage_type": "line",
+  "timeout_seconds": 300,
+  "mock_patterns": ["src/db/*", "src/external/*"]
+}
