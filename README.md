@@ -4,6 +4,14 @@ A collection of autonomous AI agent skills for code quality, hardening, and opti
 
 Built by [Tyler Gibbs](https://github.com/tylergibbs1).
 
+## Quick start
+
+```bash
+npx skills add tylergibbs1/codeskills
+```
+
+Then run `/auto-research`, `/auto-refactor`, `/fuzz-fix`, or `/auto-test` in your agent. Other install options are [below](#installation).
+
 ## What are Skills?
 
 Skills are markdown files that give AI agents specialized knowledge and workflows for specific tasks. These skills run autonomously in infinite loops — you start them and walk away. They modify code, measure results, keep improvements, and discard failures.
@@ -40,7 +48,6 @@ All four skills share a common pattern: autonomous loop with measurable outcomes
          └──────────────┴──────┬───────┴──────────────┘
           Skills share: git branching, results.tsv,
           context window management, strategy rotation
-└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Available Skills
